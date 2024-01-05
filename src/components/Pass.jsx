@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState,  useEffect } from 'react';
 
 function Pass() {
   const [length, setLength] = useState(8)
@@ -12,25 +12,25 @@ function Pass() {
     let str = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
     if (num) {
-      str += "012345678"
+      str += "0123456789";
     }
 
-    if (num) {
-      str += "!@#$%&){}:/."
+    if (char) {
+      str += "!@#$%&){}:/.";
     }
 
     for (let i = 1; i < length; i++) {
       let char = Math.floor(Math.random() * str.length + 1)
-      pass = str.charAt(char)
+      pass += str.charAt(char)
     }
-    console.log(str.length);
-    console.log("Bhadu");
-    setPassword(pass)
+    setPassword(pass);
 
   }, [length, num, char, setPassword]);
 
 
-
+useEffect(()=> {
+  passGen();
+}, [length, num, char, passGen]) // jitni bhi dep. saath changes honge, ye re-run hoga
 
   return (
     <>
@@ -62,16 +62,27 @@ function Pass() {
 
           </div>
           <div className='flex items-center gap-x-1'>
-            <input type="check-box"
+            <input type='checkbox'
               defaultChecked={num}
-              value={length}
               id='numInp'
               onChange={() => {
                 setNum((prev) => !prev);
               }}
             />
-            <label>Length : {length}</label>
+            <label htmlFor='numInp'>Numbers</label>
           </div>
+
+          <div className='flex items-center gap-x-1'>
+            <input type='checkbox'
+              defaultChecked={char}
+              id='charInp'
+              onChange={() => {
+                setChar((prev) => !prev);
+              }}
+            />
+            <label htmlFor='charInp'>Characters</label>
+          </div>
+
         </div>
 
       </div>
