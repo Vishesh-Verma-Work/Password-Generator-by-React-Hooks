@@ -1,4 +1,4 @@
-import React, { useCallback, useState,  useEffect } from 'react';
+import React, { useCallback, useState,  useEffect, useRef } from 'react';
 
 function Pass() {
   const [length, setLength] = useState(8)
@@ -32,9 +32,17 @@ useEffect(()=> {
   passGen();
 }, [length, num, char, passGen]) // jitni bhi dep. saath changes honge, ye re-run hoga
 
+const passCopy = useCallback(()=> {
+  passRef.current?.select()
+  passRef.current?.setSelectionRange(0,24 )
+  window.navigator.clipboard.writeText(password)
+}, [password])
+
+const passRef = useRef(null)
+
   return (
     <>
-      <div className='w-full max-w-md mx-auto shadow-md rounded-lg px-4 my-8 py-6 text-orange-500 bg-gray-800'>
+      <div className='w-full max-w-md mx-auto shadow-md rounded-lg px-8 mt-8 py-8 text-orange-500 bg-gray-800'>
         <h1 className='text-white text-center my-2'>Password Generator</h1>
         <div className='flex shadow-lg rounde-lg overflow-hidden mb-4 rounded-lg'>
 
@@ -43,8 +51,10 @@ useEffect(()=> {
             className='outline-none w-full py-1 px-3'
             readOnly
             placeholder='Password'
+            ref={passRef}
           />
           <button
+          onClick={passCopy}
             className='outline-none bg-blue-700 text-white px-3 py-.5 shrink-0'
           >Copy</button>
 
